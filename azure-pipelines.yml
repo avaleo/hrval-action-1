@@ -1,0 +1,26 @@
+parameters:
+  - name: imageTag
+    displayName: Output Docker image tag
+    default: 'latest'
+    type: string
+
+variables:
+  - name: imageName
+    value: avaleodevops/hrval
+
+trigger:
+  - release
+
+pr: none
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+  - task: Docker@2
+    displayName: Build and push Docker image
+    inputs:
+      containerRegistry: 'Avaleo DockerHub'
+      repository: $(imageName)
+      Dockerfile: Dockerfile
+      tags: ${{ parameters.imageTag }}
